@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Dialog, DialogActions, DialogContent, DialogTitle, Grid2, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CardMedia, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Grid2, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, MenuList, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -13,7 +13,9 @@ const Products = () => {
     const [isDialogOpen, setisDialogOpen] = useState(false)
 
     const [prodData, setprodData] = useState(null)
+    const [filterProd, setFilterProd] = useState([])
 
+    const [selectedBrand, setselectedBrand] = useState("All")
 
     let handleOpen = (event) => {
         setmenuAnchor(event.currentTarget)
@@ -38,7 +40,8 @@ const Products = () => {
     useEffect(() => {
         let fetchProducts = async () => {
             let result = await axios.get('https://dummyjson.com/products')
-
+// 
+            setFilterProd(result.data.products)
             console.log("DATA", result.data.products);
             setallProducts(result.data.products)
         }
@@ -47,11 +50,45 @@ const Products = () => {
     }, [])
 
 
+    useEffect(() => {
+
+        if (selectedBrand == "All") {
+            setFilterProd(allProducts)
+        }
+        else {
+            setFilterProd(allProducts.filter((prod) => prod.brand == selectedBrand))
+        }
+
+    }, [selectedBrand])
+
+
+
+
+
+    let brandList = ["All", "Chanel", "Dior", "Annibale Colombo", "Bath Trends"]
+
+
     return (
         <>
+
+            <Stack direction="row" mt={3} spacing={3} mb={3}>
+                {
+                    brandList.map((brand) => {
+                        return (
+                            <Chip key={brand}
+                                label={brand}
+                                clickable
+                                color='primary'
+                                onClick={() => {
+                                    setselectedBrand(brand)
+                                }} />
+                        )
+                    })
+                }
+            </Stack>
             <Grid2 container spacing={3} padding={3}>
                 {
-                    allProducts.map((item) => {
+                    filterProd.map((item) => {
                         return (
                             <Grid2 size={{
                                 sm: 12,
@@ -71,6 +108,7 @@ const Products = () => {
                                         <CardContent>
                                             <Typography variant='h5'>{item.title}</Typography>
                                             <Typography variant='h6'>{item.price}</Typography>
+                                            <Typography variant='h6'>{item.brnd}</Typography>
                                         </CardContent>
                                         <CardActions sx={{ display: 'flex' }}>
                                             <Button fullWidth onClick={() => navigate('/proddetails', {

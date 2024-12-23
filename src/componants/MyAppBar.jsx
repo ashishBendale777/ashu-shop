@@ -64,6 +64,15 @@ const MyAppBar = () => {
                                     </ListItemText>
                                 </ListItemButton>
                             </ListItem>
+
+                            <ListItem>
+                                <ListItemButton
+                                    onClick={() => navigate('/register')}>
+                                    <ListItemText>
+                                        Register
+                                    </ListItemText>
+                                </ListItemButton>
+                            </ListItem>
                         </List>
                     </Box>
                 </Toolbar>
