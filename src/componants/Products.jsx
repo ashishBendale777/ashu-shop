@@ -3,9 +3,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom'
+import { addItem } from '../reduxwork/CartSlice';
+import { useDispatch } from 'react-redux';
 
 
 const Products = () => {
+
+    let dispatcher = useDispatch()
     const [menuAnchor, setmenuAnchor] = useState(null)
     let isOpen = Boolean(menuAnchor)
 
@@ -40,7 +44,7 @@ const Products = () => {
     useEffect(() => {
         let fetchProducts = async () => {
             let result = await axios.get('https://dummyjson.com/products')
-// 
+            // 
             setFilterProd(result.data.products)
             console.log("DATA", result.data.products);
             setallProducts(result.data.products)
@@ -142,7 +146,10 @@ const Products = () => {
                                                         </ListItemText>
                                                     </MenuItem>
 
-                                                    <MenuItem>
+                                                    <MenuItem onClick={() => {
+                                                        dispatcher(addItem(item))
+                                                        alert("Added")
+                                                    }}>
                                                         <ListItemIcon>
 
                                                         </ListItemIcon>
