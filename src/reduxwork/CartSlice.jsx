@@ -15,9 +15,19 @@ let CartSlice = createSlice({
             state.cartItems = [...state.cartItems, newItem]
             state.noOfItems = state.cartItems.length
         },
-        incrementQty: () => { },
-        decrementQty: () => { },
+        incrementQty: (state, action) => {
+            let prod = state.cartItems.find((p) => p.id === action.payload)
+            prod.quantity += 1
+        },
+        decrementQty: (state, action) => {
+            let prod = state.cartItems.find((p) => p.id === action.payload)
+            prod.quantity -= 1
+        },
         removeItem: () => { },
+        clearCart: (state) => {
+            state.cartItems = []
+            state.noOfItems = 0
+        },
         calculatetotal: (state) => {
             let total = 0
             state.cartItems.forEach((item) => {
@@ -31,5 +41,6 @@ let CartSlice = createSlice({
 
 export const { addItem, incrementQty,
     decrementQty,
-    removeItem, calculatetotal } = CartSlice.actions
+    removeItem, calculatetotal,
+clearCart } = CartSlice.actions
 export default CartSlice.reducer

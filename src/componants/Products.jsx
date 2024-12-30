@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 const Products = () => {
 
     let dispatcher = useDispatch()
-    const [menuAnchor, setmenuAnchor] = useState(null)
+    const [menuAnchor, setmenuAnchor] = useState({})
     let isOpen = Boolean(menuAnchor)
 
     //dialog state variable
@@ -120,8 +120,14 @@ const Products = () => {
                                             })}>
                                                 View Details
                                             </Button>
+                                            <Button onClick={() => {
+                                                dispatcher(addItem(item))
+                                            }
+                                            }>
+                                                Add To Cart
+                                            </Button>
 
-                                            <IconButton id={item.id}
+                                            {/* <IconButton id={item.id}
                                                 aria-controls={menuAnchor ? item.id : undefined}
                                                 aria-haspopup="true"
                                                 aria-expanded={menuAnchor ? 'true' : undefined}
@@ -148,7 +154,7 @@ const Products = () => {
 
                                                     <MenuItem onClick={() => {
                                                         dispatcher(addItem(item))
-                                                        alert("Added")
+                                                        handleClose()
                                                     }}>
                                                         <ListItemIcon>
 
@@ -158,7 +164,7 @@ const Products = () => {
                                                         </ListItemText>
                                                     </MenuItem>
                                                 </MenuList>
-                                            </Menu>
+                                            </Menu> */}
                                         </CardActions>
                                     </Card>
                                 </item>

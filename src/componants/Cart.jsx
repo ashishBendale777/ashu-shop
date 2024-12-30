@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { calculatetotal } from '../reduxwork/CartSlice'
-import { Button, Card, CardContent, CardMedia, Grid2, Stack, Typography } from '@mui/material'
+import { calculatetotal, clearCart, decrementQty, incrementQty } from '../reduxwork/CartSlice'
+import { Button, Card, CardActions, CardContent, CardMedia, Grid2, Stack, Typography } from '@mui/material'
 
 
 const Cart = () => {
@@ -10,9 +10,9 @@ const Cart = () => {
   let dispatcher = useDispatch()
 
 
+  dispatcher(calculatetotal())
   return (
     <>
-      [dispatcher(calculatetotal())]
       <Grid2 container spacing={3} padding={3}>
         {
           cartItems.map((item) => {
@@ -23,7 +23,7 @@ const Cart = () => {
                   md: 6,
                   lg: 3
                 }
-              } key={item._id}>
+              } key={item.id}>
                 <item>
                   <Card>
                     <CardMedia component='img'
@@ -34,6 +34,10 @@ const Cart = () => {
                       <Typography variant='h5'>{item.price}</Typography>
                       <Typography variant='h5'>{item.quantity}</Typography>
                     </CardContent>
+                    <CardActions>
+                      <Button onClick={() => dispatcher(decrementQty(item.id))} >-</Button>
+                      <Button onClick={() => dispatcher(incrementQty(item.id))}>+</Button>
+                    </CardActions>
                   </Card>
                 </item>
               </Grid2>
@@ -41,9 +45,13 @@ const Cart = () => {
           })
         }
       </Grid2 >
-      <Stack direction="row">
+
+      <Stack spacing={4} direction="row">
         <Typography variant='h2'>Total {cartTotal}</Typography>
         <Button variant='contained' color='success'>Place Order</Button>
+        <Button variant='contained' color='error' onClick={() =>
+          dispatcher(clearCart())
+        }>Clear</Button>
       </Stack>
     </>
   )
